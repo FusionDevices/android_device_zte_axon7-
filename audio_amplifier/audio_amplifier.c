@@ -166,33 +166,6 @@ static int amp_enable_output_devices(struct amplifier_device *device, uint32_t d
     return 0;
 }
 
-    switch (devices) {
-        case SND_DEVICE_OUT_SPEAKER:
-        case SND_DEVICE_OUT_SPEAKER_REVERSE:
-            pthread_mutex_lock(&tfa9890->amp_update);
-            tfa9890_update_amp(tfa9890, tfa9890->state.in_stream, tfa9890->state.in_call,
-                               tfa9890->state.amp_device, tfa9890->state.amp_mode);
-            pthread_mutex_unlock(&tfa9890->amp_update);
-            break;
-        case SND_DEVICE_OUT_VOICE_SPEAKER:
-        case SND_DEVICE_OUT_HANDSET:
-        case SND_DEVICE_OUT_VOICE_HANDSET:
-            pthread_mutex_lock(&tfa9890->amp_update);
-            tfa9890_update_amp(tfa9890, tfa9890->state.in_stream, enable,
-                               tfa9890->state.amp_device, tfa9890->state.amp_mode);
-            pthread_mutex_unlock(&tfa9890->amp_update);
-            break;
-        default:
-            ALOGE("%s: Unandled device %d\n", __func__, devices);
-            pthread_mutex_lock(&tfa9890->amp_update);
-            tfa9890_update_amp(tfa9890, tfa9890->state.in_stream, tfa9890->state.in_call,
-                               tfa9890->state.amp_device, tfa9890->state.amp_mode);
-            pthread_mutex_unlock(&tfa9890->amp_update);
-            break;
-    }
-    return 0;
-}
-
 static int tfa9890_set_mode(struct amplifier_device *device, audio_mode_t mode) {
     ALOGD("%s: %u\n", __func__, mode);
     tfa9890_device_t *tfa9890 = (tfa9890_device_t*) device;
